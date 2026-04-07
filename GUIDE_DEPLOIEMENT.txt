@@ -1,0 +1,85 @@
+# 📋 GUIDE DE DÉPLOIEMENT FOOTCLUBPRO SUR VERCEL
+# =====================================================
+# Suivez ces étapes dans l'ordre — environ 15 minutes
+
+ÉTAPE 1 — CRÉER UN COMPTE GITHUB (GRATUIT)
+-------------------------------------------
+1. Allez sur : https://github.com
+2. Cliquez "Sign up" (S'inscrire)
+3. Entrez votre email, un mot de passe, un nom d'utilisateur
+4. Validez votre email
+→ GitHub est un endroit où stocker vos fichiers de site internet
+
+ÉTAPE 2 — CRÉER UN DÉPÔT GITHUB
+---------------------------------
+1. Connectez-vous sur github.com
+2. Cliquez le bouton vert "New" (ou le + en haut à droite)
+3. Nom du dépôt : footclubpro
+4. Cochez "Public"
+5. Cliquez "Create repository"
+
+ÉTAPE 3 — UPLOADER VOS FICHIERS
+---------------------------------
+Dans votre nouveau dépôt GitHub :
+1. Cliquez "uploading an existing file"
+2. Glissez-déposez TOUS les fichiers du dossier footclubpro/ :
+   - index.html
+   - mentions.html
+   - vercel.json
+   (et les autres fichiers html quand vous les aurez)
+3. Cliquez "Commit changes" (bouton vert)
+→ Vos fichiers sont maintenant sur GitHub
+
+ÉTAPE 4 — CRÉER UN COMPTE VERCEL (GRATUIT)
+--------------------------------------------
+1. Allez sur : https://vercel.com
+2. Cliquez "Sign Up"
+3. Choisissez "Continue with GitHub"
+4. Autorisez Vercel à accéder à GitHub
+→ Vercel et GitHub sont maintenant connectés
+
+ÉTAPE 5 — DÉPLOYER VOTRE SITE
+-------------------------------
+1. Sur Vercel, cliquez "New Project"
+2. Trouvez "footclubpro" dans la liste et cliquez "Import"
+3. Ne changez rien aux paramètres
+4. Cliquez "Deploy"
+5. Attendez 1-2 minutes...
+6. ✅ VOTRE SITE EST EN LIGNE !
+
+Vercel vous donnera une URL comme :
+→ https://footclubpro.vercel.app
+
+ÉTAPE 6 — AJOUTER VOTRE PROPRE NOM DE DOMAINE (OPTIONNEL)
+-----------------------------------------------------------
+Si vous achetez footclubpro.fr sur OVH :
+1. Dans Vercel > votre projet > Settings > Domains
+2. Tapez footclubpro.fr et cliquez Add
+3. Vercel vous montre des codes DNS à copier
+4. Collez ces codes dans votre espace OVH > Zone DNS
+5. Attendez 24-48h
+→ https://footclubpro.fr sera votre adresse
+
+ÉTAPE 7 — METTRE À JOUR LE SITE
+---------------------------------
+Chaque fois que vous voulez modifier le site :
+1. Modifiez votre fichier HTML sur votre ordinateur
+2. Retournez sur github.com > votre dépôt footclubpro
+3. Cliquez sur le fichier à modifier > icône crayon
+4. Faites vos modifications
+5. Cliquez "Commit changes"
+→ Vercel met automatiquement le site à jour en 30 secondes !
+
+COÛTS TOTAUX
+------------
+- GitHub : GRATUIT
+- Vercel : GRATUIT (pour votre usage)
+- Nom de domaine footclubpro.fr : ~12€/an sur OVH
+TOTAL : 12€/an seulement !
+
+SUPPORT
+-------
+Si vous bloquez à une étape, envoyez un email à :
+support@footclubpro.fr (votre propre email)
+
+Ou revenez dans Claude et décrivez où vous êtes bloqué.

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FootClub Pro — Gérez votre club de football</title>
+<meta name="description" content="Application de gestion de club de football affilié FFF. Licences, convocations, tournois, présences. Essai gratuit 14 jours.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bleu:#1a3c8a;--bleu2:#2563eb;--bleu3:#dbeafe;
+  --vert:#16a34a;--vert2:#22c55e;--vert3:#dcfce7;
+  --gris:#f8fafc;--gris2:#e2e8f0;--gris3:#64748b;
+  --text:#0f172a;--text2:#334155;--text3:#64748b;
+  --white:#ffffff;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.08);
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);background:var(--white);line-height:1.6}
+
+/* NAV */
+nav{background:var(--white);border-bottom:1px solid var(--gris2);padding:0 5%;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-size:20px;font-weight:800;color:var(--bleu);display:flex;align-items:center;gap:8px}
+.nav-logo span{font-size:24px}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:14px;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:var(--bleu2)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .15s;border:none}
+.btn-primary{background:var(--bleu2);color:#fff}
+.btn-primary:hover{background:#1d4ed8;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--bleu2);border:1.5px solid var(--bleu2)}
+.btn-outline:hover{background:var(--bleu3)}
+.btn-green{background:var(--vert);color:#fff}
+.btn-green:hover{background:#15803d;transform:translateY(-1px)}
+.btn-lg{padding:14px 32px;font-size:16px;border-radius:10px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0f172a 0%,#1a3c8a 50%,#1d4ed8 100%);color:#fff;padding:80px 5% 100px;text-align:center;position:relative;overflow:hidden}
+.hero:before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:500;margin-bottom:24px}
+.hero h1{font-size:clamp(32px,5vw,58px);font-weight:800;line-height:1.15;margin-bottom:20px;max-width:800px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:#60a5fa}
+.hero p{font-size:18px;opacity:.85;max-width:560px;margin:0 auto 36px;line-height:1.7}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero-note{font-size:13px;opacity:.6;margin-top:16px}
+.hero-stats{display:flex;gap:40px;justify-content:center;margin-top:56px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-val{font-size:32px;font-weight:800;color:#60a5fa}
+.hero-stat-lbl{font-size:13px;opacity:.7;margin-top:4px}
+
+/* FEATURES */
+.section{padding:80px 5%}
+.section-label{font-size:13px;font-weight:700;color:var(--bleu2);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;text-align:center}
+.section h2{font-size:clamp(26px,4vw,40px);font-weight:800;text-align:center;margin-bottom:16px;color:var(--text)}
+.section-sub{font-size:17px;color:var(--text3);text-align:center;max-width:560px;margin:0 auto 56px;line-height:1.7}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto}
+.feature-card{background:var(--white);border:1px solid var(--gris2);border-radius:var(--radius);padding:28px;transition:all .2s}
+.feature-card:hover{border-color:var(--bleu2);box-shadow:var(--shadow);transform:translateY(-2px)}
+.feature-icon{width:52px;height:52px;border-radius:14px;background:var(--bleu3);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px}
+.feature-title{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
+.feature-desc{font-size:14px;color:var(--text3);line-height:1.6}
+
+/* PRICING */
+.pricing{background:var(--gris);padding:80px 5%}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:700px;margin:0 auto}
+.plan{background:var(--white);border:1.5px solid var(--gris2);border-radius:var(--radius);padding:32px;position:relative}
+.plan.featured{border-color:var(--bleu2);box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.plan-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--bleu2);color:#fff;font-size:12px;font-weight:700;padding:4px 16px;border-radius:20px;white-space:nowrap}
+.plan-name{font-size:14px;font-weight:600;color:var(--text3);margin-bottom:8px}
+.plan-price{font-size:42px;font-weight:800;color:var(--text);margin-bottom:4px}
+.plan-price span{font-size:16px;font-weight:400;color:var(--text3)}
+.plan-desc{font-size:14px;color:var(--text3);margin-bottom:24px;min-height:40px}
+.plan-features{list-style:none;margin-bottom:28px}
+.plan-features li{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:14px;border-bottom:1px solid var(--gris2)}
+.plan-features li:last-child{border:none}
+.plan-features li:before{content:'✓';color:var(--vert);font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* HOW IT WORKS */
+.how{padding:80px 5%;background:var(--white)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;max-width:900px;margin:0 auto;position:relative}
+.steps-grid:before{content:'';position:absolute;top:28px;left:10%;right:10%;height:2px;background:var(--gris2);z-index:0}
+.how-step{text-align:center;position:relative;z-index:1}
+.how-step-num{width:56px;height:56px;border-radius:50%;background:var(--bleu2);color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:4px solid var(--white);box-shadow:0 0 0 2px var(--bleu2)}
+.how-step-title{font-size:15px;font-weight:700;margin-bottom:6px}
+.how-step-desc{font-size:13px;color:var(--text3);line-height:1.5;padding:0 12px}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--bleu);padding:80px 5%;color:#fff}
+.testimonials h2{color:#fff;text-align:center;font-size:clamp(24px,4vw,36px);font-weight:800;margin-bottom:12px}
+.testimonials .section-sub{color:rgba(255,255,255,.7)}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1000px;margin:0 auto}
+.testi-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);padding:24px}
+.testi-text{font-size:15px;line-height:1.7;margin-bottom:16px;opacity:.9}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700}
+.testi-name{font-size:14px;font-weight:600}
+.testi-club{font-size:12px;opacity:.6}
+
+/* CTA FINAL */
+.cta-final{padding:80px 5%;text-align:center;background:linear-gradient(135deg,#f0f7ff,#e0eeff)}
+.cta-final h2{font-size:clamp(26px,4vw,42px);font-weight:800;margin-bottom:16px;color:var(--text)}
+.cta-final p{font-size:17px;color:var(--text3);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto}
+
+/* FOOTER */
+footer{background:#0f172a;color:rgba(255,255,255,.6);padding:48px 5% 32px;font-size:13px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand{font-size:18px;font-weight:800;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.footer-desc{line-height:1.7;max-width:260px}
+.footer-col-title{color:#fff;font-weight:700;font-size:14px;margin-bottom:14px}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:8px}
+.footer-links a{color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap}
+.footer-bottom a{color:rgba(255,255,255,.5);text-decoration:none;margin-left:20px}
+.footer-bottom a:hover{color:#fff}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:36px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto}
+.modal h3{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--text)}
+.modal-sub{font-size:14px;color:var(--text3);margin-bottom:24px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:5px}
+.form-input{width:100%;border:1.5px solid var(--gris2);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--text);outline:none;transition:border .15s;font-family:inherit}
+.form-input:focus{border-color:var(--bleu2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.success-box{background:var(--vert3);border:1px solid #bbf7d0;border-radius:10px;padding:20px;text-align:center;display:none}
+.success-box h4{color:var(--vert);font-size:18px;font-weight:700;margin-bottom:6px}
+.success-box p{color:#166534;font-size:14px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .steps-grid:before{display:none}
+  .hero-stats{gap:24px}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr}
+  .hero-ctas{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>⚽</span> FootClub Pro</div>
+  <div class="nav-links">
+    <a href="#fonctionnalites">Fonctionnalités</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#comment">Comment ça marche</a>
+    <a href="app.html">Application</a>
+  </div>
+  <div style="display:flex;gap:10px">
+    <a href="app.html" class="btn btn-outline">Se connecter</a>
+    <a href="#" class="btn btn-primary" onclick="openModal();return false">Essai gratuit 14j</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">⚽ Fédération Française de Football</div>
+  <h1>Gérez votre club de football<br><em>simplement et efficacement</em></h1>
+  <p>Licences, convocations, présences, tournois jusqu'à 100 équipes — tout en un. Fait pour les clubs FFF.</p>
+  <div class="hero-ctas">
+    <a href="#" class="btn btn-green btn-lg" onclick="openModal();return false">🎁 Démarrer gratuitement — 14 jours</a>
+    <a href="app.html" class="btn btn-lg" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3)">Voir la démo</a>
+  </div>
+  <p class="hero-note">Aucune carte bancaire requise · 10 €/mois après l'essai · Résiliable à tout moment</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-val">14 000</div><div class="hero-stat-lbl">Clubs FFF en France</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">100</div><div class="hero-stat-lbl">Équipes par tournoi</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">10€</div><div class="hero-stat-lbl">Par mois tout compris</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">14j</div><div class="hero-stat-lbl">Essai gratuit</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="fonctionnalites">
+  <div class="section-label">Fonctionnalités</div>
+  <h2>Tout ce dont votre club a besoin</h2>
+  <p class="section-sub">Une seule application pour gérer l'ensemble de la vie de votre club, de la licence à la finale.</p>
+  <div class="features-grid">
+    ${[
+      ['🪪','Licences & Effectifs','Gérez toutes vos licences FFF par département et catégorie. Filtrez par équipe, statut, catégorie d\'âge.'],
+      ['👥','Joueurs & Staff','Fiches complètes : poste, taille, pointure, email, téléphone. Éducateurs, entraîneurs, dirigeants, arbitres.'],
+      ['📋','Convocations','Convocations pour matchs, entraînements, tournois, plateaux, matchs en salle. Envoi automatique.'],
+      ['✅','Présences','Disponibilité 15j avant, confirmation 48h avant, présence le jour J. Cochage simple pour joueurs et parents.'],
+      ['🏆','Championnat','Classements, résultats, calendrier pré-rempli pour la formule championnat. Coupes et matchs amicaux.'],
+      ['🎯','Tournois 1-100 équipes','Groupes pairs et impairs, poules de 3 à 6, élimination directe, croisements, phase finale. Règlement automatique.'],
+      ['⬛','Gestion des terrains','Jusqu\'à 30 terrains avec numéro, nom et couleur. Affectation des matchs, planning horaire par terrain.'],
+      ['👕','Maillots & Équipements','Suivi des tenues par équipe, gestion des stocks par taille, alerte rupture.'],
+      ['🩹','Blessures','Suivi des blessures par joueur, durée d\'indisponibilité, type de blessure, reprise.'],
+      ['🍔','Restauration','Menu, boissons, tarifs, compteur de commandes pour les tournois.'],
+      ['📜','Règlement & Cartons','Règlement du club, tarifs des cotisations, amendes disciplinaires, cartons.'],
+      ['📄','Export Word','Phase de poules, classements, planning des terrains, phase finale, feuilles de match vierges.'],
+    ].map(([ic,t,d])=>`<div class="feature-card"><div class="feature-icon">${ic}</div><div class="feature-title">${t}</div><div class="feature-desc">${d}</div></div>`).join('')}
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="comment">
+  <div class="section-label">Comment ça marche</div>
+  <h2>Opérationnel en 5 minutes</h2>
+  <p class="section-sub" style="margin-bottom:60px">Pas de formation, pas de technicien. Vous créez votre compte et vous commencez.</p>
+  <div class="steps-grid">
+    ${[['1','Inscription','Créez votre compte club en 2 minutes. Aucune carte bancaire.'],['2','Ajoutez vos joueurs','Importez ou saisissez vos licenciés par catégorie.'],['3','Gérez votre saison','Convocations, présences, tournois, résultats.'],['4','Exportez & imprimez','Feuilles de match, classements, planning en Word.']].map(([n,t,d])=>`<div class="how-step"><div class="how-step-num">${n}</div><div class="how-step-title">${t}</div><div class="how-step-desc">${d}</div></div>`).join('')}
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="tarifs">
+  <div class="section-label">Tarifs</div>
+  <h2>Simple et transparent</h2>
+  <p class="section-sub">Un seul abonnement par club. Toutes les équipes, toutes les catégories incluses.</p>
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-name">Essai gratuit</div>
+      <div class="plan-price">0 € <span>/ 14 jours</span></div>
+      <div class="plan-desc">Accès complet, aucune carte requise</div>
+      <ul class="plan-features">
+        <li>Toutes les fonctionnalités</li>
+        <li>Joueurs & licences illimités</li>
+        <li>Tournois jusqu'à 100 équipes</li>
+        <li>Export Word inclus</li>
+        <li>Support par email</li>
+      </ul>
+      <a href="#" class="btn btn-outline" style="width:100%;justify-content:center" onclick="openModal();return false">Commencer gratuitement</a>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge">⭐ Recommandé</div>
+      <div class="plan-name">Club Pro</div>
+      <div class="plan-price">10 € <span>/ mois</span></div>
+      <div class="plan-desc">Après l'essai · tout inclus · sans engagement</div>
+      <ul class="plan-features">
+        <li>Tout de l'essai gratuit</li>
+        <li>Historique saisons illimité</li>
+        <li>Export PDF & Excel</li>
+        <li>Notifications automatiques</li>
+        <li>Support prioritaire</li>
+      </ul>
+      <a href="#" class="btn btn-primary" style="width:100%;justify-content:center" onclick="openModal();return false">Démarrer l'essai gratuit</a>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:24px;font-size:14px;color:var(--text3)">PayPal · Carte bancaire · Virement SEPA · Paiement 100% sécurisé</p>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <h2>Ils gèrent leur club avec FootClub Pro</h2>
+  <p class="section-sub" style="margin-bottom:48px">Des clubs de toute la France nous font confiance</p>
+  <div class="testi-grid">
+    ${[
+      ['"Enfin une application faite pour nous ! Les convocations se font en 2 clics et les parents reçoivent tout automatiquement."','P.M.','FC Exemple — Alsace'],
+      ['"L\'organisation de notre tournoi U10 avec 24 équipes et 4 terrains n\'a jamais été aussi simple. Le planning se génère tout seul."','M.D.','AS Rivière — Haut-Rhin'],
+      ['"Pour 10€ par mois, on a tout : licences, présences, blessures, feuilles de match imprimables. Aucun regret."','J.L.','SC Colmar — 68'],
+    ].map(([t,n,c])=>`<div class="testi-card"><div class="testi-text">${t}</div><div class="testi-author"><div class="testi-avatar">${n[0]}</div><div><div class="testi-name">${n}</div><div class="testi-club">${c}</div></div></div></div>`).join('')}
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>Prêt à simplifier la gestion de votre club ?</h2>
+  <p>Rejoignez les clubs qui ont déjà adopté FootClub Pro. Essai gratuit 14 jours, sans engagement.</p>
+  <a href="#" class="btn btn-green btn-lg" onclick="openModal();return false">🎁 Démarrer mon essai gratuit</a>
+  <p style="margin-top:14px;font-size:13px;color:var(--text3)">Aucune carte bancaire · Accès immédiat · Résiliable à tout moment</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">⚽ FootClub Pro</div>
+      <div class="footer-desc">Application de gestion de clubs de football affiliés à la Fédération Française de Football. Développé en France.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Application</div>
+      <ul class="footer-links">
+        <li><a href="#fonctionnalites">Fonctionnalités</a></li>
+        <li><a href="#tarifs">Tarifs</a></li>
+        <li><a href="app.html">Démo</a></li>
+        <li><a href="#" onclick="openModal();return false">S'inscrire</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Légal</div>
+      <ul class="footer-links">
+        <li><a href="cgu.html">CGU</a></li>
+        <li><a href="confidentialite.html">Confidentialité</a></li>
+        <li><a href="mentions.html">Mentions légales</a></li>
+        <li><a href="cgv.html">CGV</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="mailto:support@footclubpro.fr">support@footclubpro.fr</a></li>
+        <li><a href="mailto:dpo@footclubpro.fr">dpo@footclubpro.fr</a></li>
+        <li><a href="#">District Alsace</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 FootClub Pro — Tous droits réservés — Mulhouse, France</span>
+    <div><a href="cgu.html">CGU</a><a href="confidentialite.html">RGPD</a><a href="mentions.html">Mentions légales</a></div>
+  </div>
+</footer>
+
+<!-- MODAL INSCRIPTION -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>🎁 Démarrer mon essai gratuit</h3>
+    <p class="modal-sub">14 jours offerts, accès complet, aucune carte bancaire requise.</p>
+    <div id="form-content">
+      <div class="form-group"><label class="form-label">Nom du club</label><input class="form-input" type="text" id="f-club" placeholder="FC Mon Club"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Département</label><input class="form-input" type="text" id="f-dept" placeholder="Ex: 68"></div>
+        <div class="form-group"><label class="form-label">N° FFF (optionnel)</label><input class="form-input" type="text" id="f-fff" placeholder="06800XXX"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" type="text" id="f-prenom" placeholder="Jean"></div>
+        <div class="form-group"><label class="form-label">Nom</label><input class="form-input" type="text" id="f-nom" placeholder="Dupont"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="f-email" placeholder="contact@monclub.fr"></div>
+      <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" type="tel" id="f-tel" placeholder="06 XX XX XX XX"></div>
+      <div class="form-group"><label class="form-label">Mot de passe</label><input class="form-input" type="password" id="f-pwd" placeholder="Minimum 8 caractères"></div>
+      <div id="form-error" style="color:#dc2626;font-size:13px;margin-bottom:10px;display:none"></div>
+      <button class="btn btn-green" style="width:100%;padding:14px;font-size:15px;border-radius:10px" onclick="submitForm()">Créer mon compte gratuitement →</button>
+      <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:12px">En m'inscrivant, j'accepte les <a href="cgu.html" style="color:var(--bleu2)">CGU</a> et la <a href="confidentialite.html" style="color:var(--bleu2)">politique de confidentialité</a></p>
+    </div>
+    <div class="success-box" id="success-box">
+      <h4>✅ Compte créé avec succès !</h4>
+      <p>Vérifiez votre email <strong id="success-email"></strong> pour activer votre compte. Votre essai de 14 jours démarre maintenant.</p>
+      <br>
+      <a href="app.html" class="btn btn-green" style="width:100%;justify-content:center">Accéder à mon espace club →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(){document.getElementById('modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
+function submitForm(){
+  const club=document.getElementById('f-club').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const pwd=document.getElementById('f-pwd').value;
+  const err=document.getElementById('form-error');
+  if(!club){err.textContent='Veuillez entrer le nom de votre club.';err.style.display='block';return;}
+  if(!email||!email.includes('@')){err.textContent='Veuillez entrer un email valide.';err.style.display='block';return;}
+  if(pwd.length<8){err.textContent='Le mot de passe doit contenir au moins 8 caractères.';err.style.display='block';return;}
+  err.style.display='none';
+  document.getElementById('form-content').style.display='none';
+  document.getElementById('success-box').style.display='block';
+  document.getElementById('success-email').textContent=email;
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
